@@ -35,4 +35,9 @@ public class Enums : MonoBehaviour
         // Camera Will Always Be at Z Axis -10
     }
 
+    public enum StateEventType
+    {
+        HitBoxEvent,
+    }
+
 }

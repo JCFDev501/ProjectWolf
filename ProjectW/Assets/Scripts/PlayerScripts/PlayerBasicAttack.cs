@@ -6,7 +6,6 @@ public class PlayerBasicAttack : MonoBehaviour
 {
     private PlayerController m_playerController; // Cached reference to the PlayerController script, used for input handling
     private GameObject m_playerHitBox; // The hitbox we are controlling
-    private bool m_isAttacking = false; // Flag to prevent multiple attacks while the hitbox is active
     private KaysAnimationManager m_Anim_Manager;
 
     private PlayerMovement m_playerMovement;
@@ -51,24 +50,32 @@ public class PlayerBasicAttack : MonoBehaviour
     void Update()
     {
         // Check if the attack button was pressed and if the player is not already attacking
-        if (m_playerController.m_attackPressed && !m_isAttacking)
+        if (m_playerController.m_attackPressed && !m_playerController.m_isAttacking)
         {
-            Debug.Log("Kay Attacked");
-            m_Anim_Manager.PlayAnimation("Attack");
+            m_playerController.m_AttackStarted = true;
+
+            if (m_playerMovement.m_playerLastDirection == Enums.PlayerDirection.Right)
+            {
+                Debug.Log("Kay Attacked");
+                m_Anim_Manager.PlayAnimation("Attack");
+            }
+            
         }
     }
 
     // Coroutine to handle the attack duration and resetting the hitbox
     private IEnumerator HandleAttack()
     {
-        m_isAttacking = true; // Set the flag to indicate the player is attacking
+        m_playerController.m_isAttacking = true; // Set the flag to indicate the player is attacking
         m_playerHitBox.SetActive(true); // Activate the hitbox
 
         // Wait for the duration of the attack
         yield return new WaitForSeconds(m_AttackDuration);
 
         m_playerHitBox.SetActive(false); // Deactivate the hitbox
-        m_isAttacking = false; // Reset the flag to allow attacking again
+        m_playerController.m_isAttacking = false; // Reset the flag to allow attacking again
+        m_playerController.m_AttackStarted = false;
+
     }
 
     public void Attack()

@@ -24,22 +24,6 @@ public class HealthComponent : MonoBehaviour
         m_currentHealth = m_maxHealth;
     }
 
-    // Todo: Temporary We need to implement some type of player manager script!
-    // Update is called once per frame
-    // Checks if the object is dead and, if so, logs a message and destroys the object
-    void Update()
-    {
-        // If the object's health has reached the minimum value (i.e., it's dead)
-        if (IsDead())
-        {
-            // Log the death to the console for debugging purposes
-            Debug.Log(gameObject.name + " has died!");
-
-            // Destroy the game object this script is attached to
-            Destroy(gameObject);
-        }
-    }
-
     // Instantly heals the object by the specified value
     public void Heal(float val)
     {
@@ -76,30 +60,6 @@ public class HealthComponent : MonoBehaviour
 
         // Otherwise, return false
         return false;
-    }
-
-    public void HandleHitBoxEnter(HitBoxComponent hitBox)
-    {
-        // Ensure the hitbox does not belong to the same game object
-        if (hitBox.hitboxOwner == this.gameObject)
-        {
-            return; // Ignore the hitbox if it belongs to this object
-        }
-
-        // Check if the hitbox is harmful (causes damage)
-        if (hitBox.IsHarmful())
-        {
-            // Apply damage to this object based on the hitbox's effect value
-            TakeDamage(hitBox.EffectValue());
-        }
-        else
-        {
-            // Otherwise, heal this object based on the hitbox's effect value
-            Heal(hitBox.EffectValue());
-        }
-
-
-
     }
 
     public void IsInvulnerable(bool val)

@@ -11,14 +11,16 @@ GameObject:
   - component: {fileID: 989861427118964494}
   - component: {fileID: 5618407182712365915}
   - component: {fileID: 4705063940693235857}
+  - component: {fileID: 9081611568748776030}
   - component: {fileID: 3983535876041763151}
   - component: {fileID: 1539281846193054469}
   - component: {fileID: 8525492071826360906}
   - component: {fileID: 8986680918827392374}
   - component: {fileID: 6328057162335902236}
+  - component: {fileID: 8951636645373858027}
   m_Layer: 0
   m_Name: Test Dummy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +127,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0008423626, y: 0}
   m_Size: {x: 0.99831516, y: 2.0000002}
   m_Direction: 0
+--- !u!114 &9081611568748776030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799259287588850439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ab9ffa99ab36248b1a3bbb67057325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3983535876041763151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,3 +253,17 @@ MonoBehaviour:
   m_minHealth: 0
   m_maxHealth: 100
   m_currentHealth: 100
+  m_invulnerable: 0
+--- !u!114 &8951636645373858027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799259287588850439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843585c3d1e3ecc4f9e0992f40be21c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventHandlerScript: {fileID: 9081611568748776030}

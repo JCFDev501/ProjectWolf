@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     public bool jumpHeld { get; private set; } // Property to check if the jump button is held
     public bool jumpReleased { get; private set; } // Property to check if the jump button is released
 
+    public bool m_isAttacking = false; // Flag to prevent multiple attacks while the hitbox is active
+    public bool m_AttackStarted = false; // Flag to prevent multiple attacks while the hitbox is active
+
     // Update is called once per frame
     void Update()
     {

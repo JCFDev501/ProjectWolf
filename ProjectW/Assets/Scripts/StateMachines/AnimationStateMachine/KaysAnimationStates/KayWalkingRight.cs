@@ -21,10 +21,16 @@ public class KayWalkingRight : BaseAnimState
 
     public override void UpdateState(AnimationStateManager manager)
     {
-        if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.Left)
-            m_kaysManager.TransitionToState(m_kaysManager.KayWalkingLeftState);
-        else if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.None && m_playerMovement.IsGrounded())
-            m_kaysManager.TransitionToState(m_kaysManager.KayIdleRightState);
+        m_kaysManager = manager as KaysAnimationManager; // Caste to our child
+
+        if (m_kaysManager != null)
+        {
+            if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.Left)
+                m_kaysManager.TransitionToState(m_kaysManager.KayWalkingLeftState);
+            else if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.None && m_playerMovement.IsGrounded() && !m_kaysManager.m_playerController.m_AttackStarted)
+                m_kaysManager.TransitionToState(m_kaysManager.KayIdleRightState);
+        }
+            
     }
 
     public override void ExitState(AnimationStateManager manager)
