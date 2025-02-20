@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class KaysAnimationManager : AnimationStateManager
 {
+    public PlayerController m_playerController; // Cached reference to the PlayerController script
 
     public KayWalkingRight KayWalkingRightState = new KayWalkingRight();
     public KayWalkingLeft KayWalkingLeftState = new KayWalkingLeft();
@@ -13,6 +14,13 @@ public class KaysAnimationManager : AnimationStateManager
     // Start is called before the first frame update
     new void Start()
     {
+        // Cache the reference to the PlayerController script
+        m_playerController = GetComponent<PlayerController>();
+        if (m_playerController == null)
+        {
+            Debug.LogError("Could not find controller");
+        }
+
         base.Start(); // Calls the Start method of the base class (AnimationStateManager)
 
         m_currentState = KayIdleRightState;

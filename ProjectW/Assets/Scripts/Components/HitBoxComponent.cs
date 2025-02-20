@@ -11,22 +11,30 @@ public class HitBoxComponent : MonoBehaviour
     // The amount of damage or healing this hitbox will apply when it collides with another object
     [SerializeField] private float m_effectValue = 0f;
 
-    private bool wasHitBoxEnabled = false;
-
-    public GameObject hitboxOwner = null;
-
     void OnEnable()
     {
-        // Assuming the HitBoxComponent or the object it's attached to has a Collider2D
-        Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(transform.position, 0.3f); // Adjust size/radius based on your needs
+        Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(transform.position, 0.3f);
 
         foreach (var collider in overlappingColliders)
         {
-            HealthComponent healthComponent = collider.GetComponent<HealthComponent>();
-            if (healthComponent != null)
+            GameObject target = collider.gameObject;
+
+            if (target != null && target != gameObject)
             {
-                 healthComponent.HandleHitBoxEnter(this);
-                 wasHitBoxEnabled = true;
+                GameObjectStateManager targetStateManager = target.GetComponent<GameObjectStateManager>();
+
+                if (targetStateManager != null)
+                {
+                    GameObject thisHitBoxOwner = gameObject.transform.parent.gameObject;
+
+                    Debug.Log(thisHitBoxOwner.name + " Hit " + target.name);
+
+                    StateEvent newEvent = new StateEvent(thisHitBoxOwner.gameObject, target,
+                        Enums.StateEventType.HitBoxEvent);
+
+                    targetStateManager.AddStateEvent(newEvent);
+                    
+                }
             }
         }
     }
@@ -34,29 +42,7 @@ public class HitBoxComponent : MonoBehaviour
     // Detects when another collider enters the trigger
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == gameObject.tag)
-        {
-            return;
-        }
-
-        if (!wasHitBoxEnabled)
-        {
-            HealthComponent healthComponent = other.GetComponent<HealthComponent>();
-            if (healthComponent != null)
-            {
-                healthComponent.HandleHitBoxEnter(this);
-            }
-        }
-
-        wasHitBoxEnabled = false;
-
-    }
-
-    // This method destroys the game object to which this script is attached
-    // It's separated into a method to keep the code organized and reusable
-    public void DestroyGameObjectAttached()
-    {
-        Destroy(gameObject);
+        //
     }
 
     // This method returns whether the hitbox is harmful (causes damage) or not (causes healing)

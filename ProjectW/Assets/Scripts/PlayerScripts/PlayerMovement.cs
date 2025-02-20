@@ -31,7 +31,8 @@ public class PlayerMovement : MonoBehaviour
     private bool stopMomentum; // Flag to temporarily stop the player's momentum, used after collisions
 
     //------------------------- [Player's Direction] -------------------------------------------------
-    [SerializeField] private Enums.PlayerDirection m_playerDirection; // Enum to track the player's facing direction (left, right, none)
+    [SerializeField] public Enums.PlayerDirection m_playerDirection; // Enum to track the player's facing direction (left, right, none)
+    [SerializeField] public Enums.PlayerDirection m_playerLastDirection; // Enum to track the player's facing direction (left, right, none)
 
     // Start is called before the first frame update
     void Start()
@@ -71,10 +72,12 @@ public class PlayerMovement : MonoBehaviour
         if (rb.velocity.x > 0)
         {
             m_playerDirection = Enums.PlayerDirection.Right; // Moving right
+            m_playerLastDirection = Enums.PlayerDirection.Right;
         }
         else if (rb.velocity.x < 0)
         {
             m_playerDirection = Enums.PlayerDirection.Left;  // Moving left
+            m_playerLastDirection = Enums.PlayerDirection.Left;
         }
         else
         {
