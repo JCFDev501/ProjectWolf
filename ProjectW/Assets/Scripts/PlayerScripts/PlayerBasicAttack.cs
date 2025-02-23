@@ -60,6 +60,7 @@ public class PlayerBasicAttack : MonoBehaviour
             }
             else if (m_playerMovement.m_playerLastDirection == Enums.PlayerDirection.Left)
             {
+                // Added
                 m_Anim_Manager.PlayAnimation("AttackLeft");
             }
             
