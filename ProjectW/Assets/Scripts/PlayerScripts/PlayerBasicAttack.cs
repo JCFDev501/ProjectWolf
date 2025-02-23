@@ -56,8 +56,11 @@ public class PlayerBasicAttack : MonoBehaviour
 
             if (m_playerMovement.m_playerLastDirection == Enums.PlayerDirection.Right)
             {
-                Debug.Log("Kay Attacked");
                 m_Anim_Manager.PlayAnimation("Attack");
+            }
+            else if (m_playerMovement.m_playerLastDirection == Enums.PlayerDirection.Left)
+            {
+                m_Anim_Manager.PlayAnimation("AttackLeft");
             }
             
         }
