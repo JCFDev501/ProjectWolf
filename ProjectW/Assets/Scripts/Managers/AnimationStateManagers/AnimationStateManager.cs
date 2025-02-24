@@ -1,42 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages the animation state transitions for an object using an Animator.
+/// This script allows smooth transitioning between animation states.
+/// </summary>
 public class AnimationStateManager : MonoBehaviour
 {
-    public Animator m_anim; // A ref to the Animator.
-    protected BaseAnimState m_currentState; // The current state we are in.
+    [Header("Animation State Manager")]
+    public Animator m_anim; // Reference to the Animator component.
+    protected BaseAnimState m_currentState; // The current animation state.
 
-
-    // Start is called before the first frame update
+    /// <summary>
+    /// Initializes the Animator and sets the default state to null.
+    /// </summary>
     protected void Start()
     {
-        m_anim = GetComponent<Animator>(); // Cache the animator.
-        if (m_anim == null )
-            Debug.LogWarning("No animator found on this object!"); // Logs a warning message to Unity.
+        // Cache the Animator component
+        m_anim = GetComponent<Animator>();
 
-        m_currentState = null; // By Default our current state is null.
+        if (m_anim == null)
+        {
+            Debug.LogWarning("No Animator found on this object!"); // Logs a warning if no Animator is attached.
+        }
+
+        m_currentState = null; // Default state is null.
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Updates the current animation state every frame.
+    /// </summary>
     protected void Update()
     {
-        // Update the state...
-        if (m_currentState != null)
-            m_currentState.UpdateState(this);
+        // If there is a current state, update it
+        m_currentState?.UpdateState(this);
     }
 
-    // Change the state...
+    /// <summary>
+    /// Transitions to a new animation state.
+    /// Handles exiting the previous state and entering the new one.
+    /// </summary>
+    /// <param name="newState">The new animation state to transition to.</param>
     public void TransitionToState(BaseAnimState newState)
     {
-        // Exit the current state...
-        if (m_currentState != null)
-            m_currentState.ExitState(this);
+        if (newState == null) return; // Safety check to prevent null transitions.
 
-        // Change the state...
+        // Exit the current state, if any
+        m_currentState?.ExitState(this);
+
+        // Assign and enter the new state
         m_currentState = newState;
-
-        // Enter the new state...
         m_currentState.EnterState(this);
     }
 }
+

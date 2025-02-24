@@ -23,7 +23,7 @@ public class KayWalkingLeft : BaseAnimState
     {
         if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.Right)
             m_kaysManager.TransitionToState(m_kaysManager.KayWalkingRightState);
-        else if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.None && m_playerMovement.IsGrounded())
+        else if (m_playerMovement.GetPlayerDirection() == Enums.PlayerDirection.None && m_playerMovement.IsGrounded() && !m_kaysManager.m_playerController.m_AttackStarted)
             m_kaysManager.TransitionToState(m_kaysManager.KayIdleLeftState);
     }
 
