@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 8986680918827392374}
   - component: {fileID: 6328057162335902236}
   - component: {fileID: 8951636645373858027}
+  - component: {fileID: 8660435118288805394}
+  - component: {fileID: 4587722085720711221}
   m_Layer: 0
   m_Name: Test Dummy
   m_TagString: Enemy
@@ -82,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.11694214, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -192,7 +194,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &8986680918827392374
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -267,3 +269,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EventHandlerScript: {fileID: 9081611568748776030}
+--- !u!114 &8660435118288805394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799259287588850439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 298179630c2b3db4db521938498b96eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_KnockbackForce: 6
+  m_LiftForce: 3
+  m_BounceBackDuration: 1
+  m_IsBouncingBack: 0
+--- !u!114 &4587722085720711221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799259287588850439}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a991ea86628d3be4f9dd8368ab3bbebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  moveDirection: {x: -1, y: 0}

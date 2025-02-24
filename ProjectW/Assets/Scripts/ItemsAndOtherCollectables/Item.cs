@@ -1,43 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents an item in the game world that a player can collect.
+/// The item type determines its behavior when collected.
+/// </summary>
 public class Item : MonoBehaviour
 {
+    [Header("Item Settings")]
+    [SerializeField] private Enums.ItemType itemType; // Defines the type of item (Collectable, Key, Tool, etc.)
 
-    // Create a variable of the enum type
-    [SerializeField] private Enums.ItemType itemType;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //itemType = Enums.ItemType.None;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Called when the item is collected by the player.
+    /// Destroys the item if it is of a valid type.
+    /// </summary>
     public void OnPlayerCollect()
     {
-        if (itemType == Enums.ItemType.None) { return; }
+        // Ignore collection if the item type is "None"
+        if (itemType == Enums.ItemType.None)
+        {
+            return;
+        }
 
-        if (itemType == Enums.ItemType.Collectable)
-        {
-            Destroy(gameObject);
-            Debug.Log(gameObject.name + "Was Destroyed");
-        }
-        else if (itemType == Enums.ItemType.Key)
-        {
-            Destroy(gameObject);
-            Debug.Log(gameObject.name + "Was Destroyed");
-        }
-        else if (itemType == Enums.ItemType.Tool)
-        {
-            Destroy(gameObject);
-            Debug.Log(gameObject.name + "Was Destroyed");
-        }
+        // Log and destroy the item based on its type
+        Debug.Log(gameObject.name + " was collected and destroyed.");
+        Destroy(gameObject);
     }
 }

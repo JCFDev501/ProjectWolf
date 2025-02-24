@@ -1,51 +1,60 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Base class for state managers, providing event processing functionality.
+/// Manages state events for a GameObject by queuing and processing them.
+/// Uses an assigned event handler script to handle event execution.
 /// </summary>
 public class GameObjectStateManager : MonoBehaviour
 {
-    // Queue to process state events
+    /// <summary>
+    /// Queue holding state events to be processed.
+    /// </summary>
     private Queue<StateEvent> m_StateEvents = new Queue<StateEvent>();
 
-    [SerializeField] private MonoBehaviour m_EventHandlerScript; // Assignable script in Unity Editor
+    [Header("Event Handling")]
+    [Tooltip("Assign a script that implements the HandleEvents method.")]
+    [SerializeField] private MonoBehaviour m_EventHandlerScript;
 
+    /// <summary>
+    /// Processes queued state events every frame.
+    /// </summary>
     void Update()
     {
-        // Only process if there are events in the queue
         if (m_StateEvents.Count > 0)
         {
             ProcessStateEvents();
         }
     }
 
+    /// <summary>
+    /// Processes all state events in the queue.
+    /// </summary>
     private void ProcessStateEvents()
     {
         while (m_StateEvents.Count > 0)
         {
             StateEvent eventToProcess = m_StateEvents.Dequeue();
 
-            // Call the method from the assigned script
             if (m_EventHandlerScript != null)
             {
                 m_EventHandlerScript.SendMessage("HandleEvents", eventToProcess, SendMessageOptions.DontRequireReceiver);
             }
             else
             {
-                Debug.LogWarning("No event handler script assigned!");
+                Debug.LogWarning($"{gameObject.name}: No event handler script assigned. State event ignored.");
             }
         }
     }
 
-
     /// <summary>
-    /// Public method to enqueue new state events.
+    /// Adds a new state event to the queue.
     /// </summary>
+    /// <param name="newEvent">The state event to add.</param>
     public void AddStateEvent(StateEvent newEvent)
     {
         m_StateEvents.Enqueue(newEvent);
     }
 }
+
 

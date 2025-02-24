@@ -1,42 +1,53 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Enums;
 
-[ExecuteAlways] // Ensure this script runs in the editor as well as at runtime
+[ExecuteAlways] // Ensures this script runs in both the Unity Editor and at runtime
 public class SceneLayerManager : MonoBehaviour
 {
-    [Header("Layer")]
-    [SerializeField] private LayerGroup m_layerGroup;  // The layer group to assign to this GameObject
+    [Header("Layer Settings")]
+    [SerializeField] private LayerGroup m_layerGroup;  // The layer group assigned to this GameObject
 
-    // Dictionary to map LayerGroup to Z-axis values
+    /// <summary>
+    /// Dictionary mapping each LayerGroup to its corresponding Z-axis position.
+    /// This helps organize the scene layers in a structured manner.
+    /// </summary>
     private readonly Dictionary<LayerGroup, float> m_layerZPositions = new Dictionary<LayerGroup, float>
     {
-        { LayerGroup.BackGround, 5f },
+        { LayerGroup.BackGround, 5f },         // Farthest back layer
         { LayerGroup.BackMiddleGround, 4f },
         { LayerGroup.MiddleGround, 3f },
         { LayerGroup.MiddleForeGround, 2f },
-        { LayerGroup.PreForeGround, 1f },   
-        { LayerGroup.ForeGround, 0f },
+        { LayerGroup.PreForeGround, 1f },
+        { LayerGroup.ForeGround, 0f },         // Default layer for most objects
         { LayerGroup.PreEffectLayer, -1f },
         { LayerGroup.EffectLayer, -2f },
-        { LayerGroup.Ui, -3f },
-        { LayerGroup.Overlay, -4f }
+        { LayerGroup.Ui, -3f },                // UI elements closer to the front
+        { LayerGroup.Overlay, -4f }            // Foremost overlay layer
     };
 
-    // This method is called whenever the script is loaded or a value is changed in the Inspector
+    /// <summary>
+    /// Called whenever a value is changed in the Inspector.
+    /// Ensures the Z position updates automatically when modified in the Unity Editor.
+    /// </summary>
     void OnValidate()
     {
         SetZPosition();
     }
 
-    // This method is called when the script starts
+    /// <summary>
+    /// Called when the script starts.
+    /// Ensures the object is positioned correctly on the Z-axis based on its assigned layer.
+    /// </summary>
     void Start()
     {
         SetZPosition();
     }
 
-    // Method to set the Z position based on the selected LayerGroup
+    /// <summary>
+    /// Sets the Z position of the GameObject based on the selected LayerGroup.
+    /// If the LayerGroup is not found in the dictionary, an error message is logged.
+    /// </summary>
     private void SetZPosition()
     {
         if (m_layerZPositions.TryGetValue(m_layerGroup, out float zPosition))
@@ -47,7 +58,8 @@ public class SceneLayerManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("LayerGroup not recognized!");
+            Debug.LogError($"LayerGroup '{m_layerGroup}' not recognized! Ensure it is defined in the dictionary.");
         }
     }
 }
+

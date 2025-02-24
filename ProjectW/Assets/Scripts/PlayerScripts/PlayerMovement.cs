@@ -34,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public Enums.PlayerDirection m_playerDirection; // Enum to track the player's facing direction (left, right, none)
     [SerializeField] public Enums.PlayerDirection m_playerLastDirection; // Enum to track the player's facing direction (left, right, none)
 
+    private BounceBack mBounceBack = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,11 +47,24 @@ public class PlayerMovement : MonoBehaviour
         rb.drag = 0f;
 
         m_kaysManager = GetComponent<KaysAnimationManager>();
+
+        mBounceBack = GetComponent<BounceBack>();
+
+        if (!mBounceBack)
+        {
+            Debug.LogError("Cant find BounceBack Component");
+        }
     }
 
     // Update is called once per frame, handling player input and state updates
     void Update()
     {
+
+        if (mBounceBack.m_IsBouncingBack)
+        {
+            return;
+        }
+        
         // Check if the player is grounded by detecting collisions with ground objects
         Vector2 groundCheckPosition = m_groundCheck.position + (Vector3)groundCheckOffset;
         isGrounded = Physics2D.OverlapCircle(groundCheckPosition, m_GroundDistance, m_groundMask);
@@ -120,6 +135,11 @@ public class PlayerMovement : MonoBehaviour
     // FixedUpdate is called at a fixed interval and is used for physics calculations
     void FixedUpdate()
     {
+        if (mBounceBack.m_IsBouncingBack)
+        {
+            return;
+        }
+        
         if (!stopMomentum) // Only apply movement if momentum is not stopped by a collision
         {
             // Calculate horizontal movement based on player input

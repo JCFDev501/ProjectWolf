@@ -1,48 +1,77 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages Kay's animation states and transitions based on player input.
+/// Inherits from AnimationStateManager and handles different animation states.
+/// </summary>
 public class KaysAnimationManager : AnimationStateManager
 {
-    public PlayerController m_playerController; // Cached reference to the PlayerController script
+    [Header("Player References")]
+    public PlayerController m_playerController; // Cached reference to the PlayerController script.
 
-    public KayWalkingRight KayWalkingRightState = new KayWalkingRight();
-    public KayWalkingLeft KayWalkingLeftState = new KayWalkingLeft();
-    public KayIdleLeft KayIdleLeftState = new KayIdleLeft();
-    public KayIdleRight KayIdleRightState = new KayIdleRight();
+    [Header("Animation States")]
+    public readonly KayWalkingRight KayWalkingRightState = new KayWalkingRight();
+    public readonly KayWalkingLeft KayWalkingLeftState = new KayWalkingLeft();
+    public readonly KayIdleLeft KayIdleLeftState = new KayIdleLeft();
+    public readonly KayIdleRight KayIdleRightState = new KayIdleRight();
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Initializes the animation manager, assigns default state, and ensures dependencies are set up.
+    /// </summary>
     new void Start()
     {
         // Cache the reference to the PlayerController script
         m_playerController = GetComponent<PlayerController>();
         if (m_playerController == null)
         {
-            Debug.LogError("Could not find controller");
+            Debug.LogError("PlayerController not found on this GameObject.");
         }
 
-        base.Start(); // Calls the Start method of the base class (AnimationStateManager)
+        // Call the base class's Start method
+        base.Start();
 
+        // Set the default animation state to idle facing right
         m_currentState = KayIdleRightState;
-
-        // Enter the new state...
-        m_currentState.EnterState(this);
+        m_currentState.EnterState(this); // Trigger initial state entry logic
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Updates the current animation state each frame.
+    /// </summary>
     new void Update()
     {
-        base.Update(); // Calls the Update method of the base class (AnimationStateManager)
+        base.Update(); // Calls the base class's Update method to manage state transitions.
     }
 
-    // Play A Certain animation
+    /// <summary>
+    /// Plays an animation by name.
+    /// </summary>
+    /// <param name="animationName">The name of the animation to play.</param>
     public void PlayAnimation(string animationName)
     {
-        m_anim.Play(animationName);
+        if (m_anim != null)
+        {
+            m_anim.Play(animationName);
+        }
+        else
+        {
+            Debug.LogWarning("Animator component not assigned.");
+        }
     }
 
+    /// <summary>
+    /// Triggers the jump animation by setting the "JUMP" trigger in the Animator.
+    /// </summary>
     public void TriggerJump()
     {
-        m_anim.SetTrigger("JUMP");
+        if (m_anim != null)
+        {
+            m_anim.SetTrigger("JUMP");
+        }
+        else
+        {
+            Debug.LogWarning("Animator component not assigned.");
+        }
     }
 }
+

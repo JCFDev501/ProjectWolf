@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float getDirection { get; private set; }
     public bool jumpPressed { get; private set; }
     public bool m_attackPressed { get; private set; }
+    public bool m_shootPressed { get; private set; }
     public bool jumpHeld { get; private set; } // Property to check if the jump button is held
     public bool jumpReleased { get; private set; } // Property to check if the jump button is released
 
@@ -24,6 +25,9 @@ public class PlayerController : MonoBehaviour
 
         // Check if the Basic Attack Button was pressed
         m_attackPressed = Input.GetButtonDown("Basic Attack");
+        
+        // Check if the shoot button was pressed
+        m_shootPressed = Input.GetButtonDown("Basic Shoot");
 
         // Check if the jump button is held
         jumpHeld = Input.GetButton("Jump");

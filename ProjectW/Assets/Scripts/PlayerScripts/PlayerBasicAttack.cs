@@ -1,90 +1,78 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages the player's basic attack logic, including hitbox activation,
+/// animation handling, and cooldown management.
+/// </summary>
 public class PlayerBasicAttack : MonoBehaviour
 {
-    private PlayerController m_playerController; // Cached reference to the PlayerController script, used for input handling
-    private GameObject m_playerHitBox; // The hitbox we are controlling
+    private PlayerController m_playerController; // Cached reference to PlayerController
     private KaysAnimationManager m_Anim_Manager;
-
     private PlayerMovement m_playerMovement;
 
-    [SerializeField] private float m_AttackDuration = 0.5f; // Duration for which the hitbox remains active
+    [SerializeField] private GameObject m_playerHitBox; // Player's attack hitbox (assign in Inspector)
+    [SerializeField] private float m_AttackDuration = 0.5f; // Attack hitbox active duration
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Cache the reference to the PlayerController script
+        // Cache references
         m_playerController = GetComponent<PlayerController>();
-        if (m_playerController == null)
-        {
-            Debug.LogError("Could not find controller");
-        }
-
-        // Cache the player hitbox
-        m_playerHitBox = gameObject.transform.GetChild(0).gameObject;
-        if (m_playerHitBox == null)
-        {
-            Debug.LogError("Could not find HitBox");
-        }
-        else
-        {
-            m_playerHitBox.SetActive(false);
-        }
-
         m_Anim_Manager = GetComponent<KaysAnimationManager>();
-        if (m_Anim_Manager == null)
-        {
-            Debug.LogError("Could not find KaysAnimationManager");
-        }
-
         m_playerMovement = GetComponent<PlayerMovement>();
+
+        // Validate components
+        if (m_playerController == null)
+            Debug.LogError("PlayerController component not found on the player.");
+        if (m_Anim_Manager == null)
+            Debug.LogError("KaysAnimationManager component not found.");
         if (m_playerMovement == null)
-        {
-            Debug.LogError("Could not find PlayerMovment script");
-        }
+            Debug.LogError("PlayerMovement component not found.");
+        if (m_playerHitBox == null)
+            Debug.LogError("Hitbox reference not assigned. Assign it in the Inspector.");
+        else
+            m_playerHitBox.SetActive(false); // Ensure hitbox starts disabled
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Check if the attack button was pressed and if the player is not already attacking
+        // Check if the attack button is pressed and if the player is not already attacking
         if (m_playerController.m_attackPressed && !m_playerController.m_isAttacking)
         {
             m_playerController.m_AttackStarted = true;
 
+            // Play attack animation based on player's facing direction
             if (m_playerMovement.m_playerLastDirection == Enums.PlayerDirection.Right)
             {
                 m_Anim_Manager.PlayAnimation("Attack");
             }
             else if (m_playerMovement.m_playerLastDirection == Enums.PlayerDirection.Left)
             {
-                // Added
                 m_Anim_Manager.PlayAnimation("AttackLeft");
             }
-            
         }
     }
 
-    // Coroutine to handle the attack duration and resetting the hitbox
-    private IEnumerator HandleAttack()
-    {
-        m_playerController.m_isAttacking = true; // Set the flag to indicate the player is attacking
-        m_playerHitBox.SetActive(true); // Activate the hitbox
-
-        // Wait for the duration of the attack
-        yield return new WaitForSeconds(m_AttackDuration);
-
-        m_playerHitBox.SetActive(false); // Deactivate the hitbox
-        m_playerController.m_isAttacking = false; // Reset the flag to allow attacking again
-        m_playerController.m_AttackStarted = false;
-
-    }
-
+    /// <summary>
+    /// Initiates the attack by enabling the hitbox and managing its duration.
+    /// </summary>
     public void Attack()
     {
         StartCoroutine(HandleAttack());
     }
-}
 
+    /// <summary>
+    /// Coroutine that manages the attack duration and resets the hitbox after completion.
+    /// </summary>
+    private IEnumerator HandleAttack()
+    {
+        m_playerController.m_isAttacking = true; // Set attacking flag
+        m_playerHitBox.SetActive(true); // Enable hitbox
+
+        yield return new WaitForSeconds(m_AttackDuration); // Wait for attack duration
+
+        m_playerHitBox.SetActive(false); // Disable hitbox
+        m_playerController.m_isAttacking = false; // Reset attack flag
+        m_playerController.m_AttackStarted = false; // Reset attack started flag
+    }
+}
